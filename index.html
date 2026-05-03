@@ -22,27 +22,25 @@
     }
 
     /* =========================
-       🌊 LIGHTER BUBBLES
+       🌊 BUBBLES (LESS CROWDED)
        ========================= */
     .bubble {
       position: fixed;
       bottom: -150px;
       border-radius: 50%;
       pointer-events: none;
-
       z-index: 2;
 
       background: radial-gradient(circle at 30% 30%,
         rgba(255,255,255,0.95),
-        rgba(200,235,255,0.6),   /* lighter blue */
+        rgba(200,235,255,0.6),
         rgba(170,220,255,0.25)
       );
 
       box-shadow:
         inset 0 0 25px rgba(255,255,255,0.9),
         inset -10px -10px 25px rgba(200,235,255,0.4),
-        0 0 35px rgba(200,235,255,0.6),
-        0 0 60px rgba(255,255,255,0.4);
+        0 0 35px rgba(200,235,255,0.6);
 
       opacity: 0;
       filter: blur(0.25px);
@@ -59,7 +57,7 @@
         opacity: 1;
       }
       100% {
-        transform: translateY(-1500px) translateX(140px) scale(1.5);
+        transform: translateY(-1500px) translateX(120px) scale(1.4);
         opacity: 0;
       }
     }
@@ -142,34 +140,32 @@
 
     .btn:hover {
       transform: scale(1.05);
-      box-shadow:
-        0 15px 35px rgba(0, 120, 200, 0.45);
     }
 
     /* =========================
-       ⏳ COUNTDOWN
+       ⏳ COUNTDOWN (BIGGER & WIDER)
        ========================= */
     .countdown {
       position: fixed;
-      top: 20px;
+      top: 25px;
       left: 50%;
       transform: translateX(-50%);
 
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 14px 24px;
+      gap: 20px 40px;
 
-      padding: 20px 30px;
-      border-radius: 28px;
+      padding: 28px 50px;
+      border-radius: 32px;
 
-      background: rgba(167, 216, 255, 0.25);
-      backdrop-filter: blur(22px);
+      background: rgba(167, 216, 255, 0.28);
+      backdrop-filter: blur(24px);
 
-      border: 1px solid rgba(255,255,255,0.4);
+      border: 1px solid rgba(255,255,255,0.45);
 
       box-shadow:
-        0 12px 45px rgba(0, 60, 120, 0.2),
-        inset 0 0 20px rgba(255,255,255,0.3);
+        0 15px 60px rgba(0, 60, 120, 0.25),
+        inset 0 0 25px rgba(255,255,255,0.35);
 
       z-index: 6;
 
@@ -181,16 +177,16 @@
     }
 
     .box div {
-      font-size: 36px;
+      font-size: 44px; /* BIGGER */
       font-weight: 300;
 
       text-shadow:
-        0 0 10px rgba(200,235,255,0.6),
-        0 0 20px rgba(170,220,255,0.4);
+        0 0 12px rgba(200,235,255,0.7),
+        0 0 25px rgba(170,220,255,0.5);
     }
 
     .box small {
-      font-size: 11px;
+      font-size: 12px;
       letter-spacing: 2px;
       text-transform: uppercase;
       opacity: 0.8;
@@ -198,7 +194,7 @@
 
     #content {
       display: none;
-      padding-top: 110px;
+      padding-top: 140px; /* more space for bigger countdown */
       position: relative;
       z-index: 2;
     }
@@ -212,13 +208,8 @@
   <div class="music-card">
     <h2>Would you like to play<br>background music?</h2>
 
-    <button class="btn" onclick="start(true)">
-      Yes, play music
-    </button>
-
-    <button class="btn" onclick="start(false)">
-      No, thanks
-    </button>
+    <button class="btn" onclick="start(true)">Yes, play music</button>
+    <button class="btn" onclick="start(false)">No, thanks</button>
   </div>
 </div>
 
@@ -245,6 +236,7 @@
 </div>
 
 <script>
+
 function start(playMusic) {
   document.getElementById("musicScreen").style.display = "none";
   document.getElementById("content").style.display = "block";
@@ -275,23 +267,24 @@ setInterval(function () {
     Math.floor((distance % (1000*60)) / 1000);
 }, 1000);
 
-// 🌊 LIGHTER BUBBLES
-for (let i = 0; i < 80; i++) {
+// 🌊 FEWER BUBBLES (MORE SPACING)
+for (let i = 0; i < 45; i++) {  // reduced from 80 → 45
   let bubble = document.createElement("div");
   bubble.className = "bubble";
 
-  let size = 30 + Math.random() * 140;
+  let size = 40 + Math.random() * 120;
 
   bubble.style.width = size + "px";
   bubble.style.height = size + "px";
 
   bubble.style.left = Math.random() * 100 + "vw";
 
-  bubble.style.animationDuration = (7 + Math.random() * 12) + "s";
-  bubble.style.animationDelay = Math.random() * 10 + "s";
+  bubble.style.animationDuration = (8 + Math.random() * 12) + "s";
+  bubble.style.animationDelay = Math.random() * 12 + "s";
 
   document.body.appendChild(bubble);
 }
+
 </script>
 
 </body>
