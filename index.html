@@ -6,6 +6,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@300;400;600;700&display=swap" rel="stylesheet">
 
   <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
       margin: 0;
       background: black;
@@ -21,9 +25,6 @@
       z-index: 1;
     }
 
-    /* =========================
-       🌊 BUBBLES (LESS CROWDED)
-       ========================= */
     .bubble {
       position: fixed;
       bottom: -150px;
@@ -44,7 +45,6 @@
 
       opacity: 0;
       filter: blur(0.25px);
-
       animation: rise linear infinite;
     }
 
@@ -62,9 +62,6 @@
       }
     }
 
-    /* =========================
-       🎵 MUSIC SCREEN
-       ========================= */
     #musicScreen {
       height: 100vh;
       display: flex;
@@ -106,6 +103,7 @@
         inset 0 0 25px rgba(255,255,255,0.6);
 
       text-align: center;
+      animation: softPop 0.9s ease forwards;
     }
 
     .music-card h2 {
@@ -142,21 +140,54 @@
       transform: scale(1.05);
     }
 
-    /* =========================
-       ⏳ COUNTDOWN (BIGGER & WIDER)
-       ========================= */
+    #content {
+      display: none;
+      position: relative;
+      z-index: 2;
+    }
+
+    .slide {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+
+    .slide img {
+      width: 100%;
+    }
+
+    .animated-slide {
+      opacity: 0;
+      transform: scale(0.92) translateY(45px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+
+    .animated-slide.show {
+      opacity: 1;
+      transform: scale(1) translateY(0);
+    }
+
+    .countdown-section {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      z-index: 4;
+    }
+
     .countdown {
-      position: fixed;
-      top: 25px;
-      left: 50%;
-      transform: translateX(-50%);
+      width: 82%;
+      max-width: 430px;
 
       display: grid;
       grid-template-columns: repeat(2, 1fr);
-      gap: 20px 40px;
+      gap: 24px 42px;
 
-      padding: 28px 50px;
-      border-radius: 32px;
+      padding: 34px 30px;
+      border-radius: 34px;
 
       background: rgba(167, 216, 255, 0.28);
       backdrop-filter: blur(24px);
@@ -167,9 +198,16 @@
         0 15px 60px rgba(0, 60, 120, 0.25),
         inset 0 0 25px rgba(255,255,255,0.35);
 
-      z-index: 6;
-
       font-family: 'Playfair Display', serif;
+
+      opacity: 0;
+      transform: scale(0.9) translateY(40px);
+      transition: opacity 0.9s ease, transform 0.9s ease;
+    }
+
+    .countdown.show {
+      opacity: 1;
+      transform: scale(1) translateY(0);
     }
 
     .box {
@@ -177,8 +215,8 @@
     }
 
     .box div {
-      font-size: 44px; /* BIGGER */
-      font-weight: 300;
+      font-size: 54px;
+      font-weight: 600;
 
       text-shadow:
         0 0 12px rgba(200,235,255,0.7),
@@ -192,13 +230,16 @@
       opacity: 0.8;
     }
 
-    #content {
-      display: none;
-      padding-top: 140px; /* more space for bigger countdown */
-      position: relative;
-      z-index: 2;
+    @keyframes softPop {
+      from {
+        opacity: 0;
+        transform: scale(0.9) translateY(25px);
+      }
+      to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+      }
     }
-
   </style>
 </head>
 
@@ -219,24 +260,43 @@
 
 <div id="content">
 
-  <div class="countdown">
-    <div class="box"><div id="days">0</div><small>Days</small></div>
-    <div class="box"><div id="hours">0</div><small>Hours</small></div>
-    <div class="box"><div id="minutes">0</div><small>Min</small></div>
-    <div class="box"><div id="seconds">0</div><small>Sec</small></div>
-  </div>
+  <section class="slide">
+    <img src="slide1.jpg">
+  </section>
 
-  <img src="slide1.jpg">
-  <img src="slide2.jpg">
-  <img src="slide3.jpg">
-  <img src="slide4.jpg">
-  <img src="slide5.jpg">
-  <img src="slide6.jpg">
+  <!-- Countdown first appears BETWEEN slide 1 and slide 2 -->
+  <section class="countdown-section">
+    <div class="countdown animated-item">
+      <div class="box"><div id="days">0</div><small>Days</small></div>
+      <div class="box"><div id="hours">0</div><small>Hours</small></div>
+      <div class="box"><div id="minutes">0</div><small>Min</small></div>
+      <div class="box"><div id="seconds">0</div><small>Sec</small></div>
+    </div>
+  </section>
+
+  <section class="slide animated-slide">
+    <img src="slide2.jpg">
+  </section>
+
+  <section class="slide animated-slide">
+    <img src="slide3.jpg">
+  </section>
+
+  <section class="slide animated-slide">
+    <img src="slide4.jpg">
+  </section>
+
+  <section class="slide animated-slide">
+    <img src="slide5.jpg">
+  </section>
+
+  <section class="slide animated-slide">
+    <img src="slide6.jpg">
+  </section>
 
 </div>
 
 <script>
-
 function start(playMusic) {
   document.getElementById("musicScreen").style.display = "none";
   document.getElementById("content").style.display = "block";
@@ -267,8 +327,25 @@ setInterval(function () {
     Math.floor((distance % (1000*60)) / 1000);
 }, 1000);
 
-// 🌊 FEWER BUBBLES (MORE SPACING)
-for (let i = 0; i < 45; i++) {  // reduced from 80 → 45
+// Slide/countdown pop animation when manually swiped into view
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add("show");
+    } else {
+      entry.target.classList.remove("show");
+    }
+  });
+}, {
+  threshold: 0.35
+});
+
+document.querySelectorAll(".animated-slide, .countdown").forEach(item => {
+  observer.observe(item);
+});
+
+// 🌊 SAME BUBBLES
+for (let i = 0; i < 45; i++) {
   let bubble = document.createElement("div");
   bubble.className = "bubble";
 
@@ -284,7 +361,6 @@ for (let i = 0; i < 45; i++) {  // reduced from 80 → 45
 
   document.body.appendChild(bubble);
 }
-
 </script>
 
 </body>
